@@ -28,7 +28,9 @@ const operationSchema = new mongoose.Schema({
     },
 });
 
+// todo - create schema as such to store the operands in a array instead of input1 and input2 as said by Aakash sir
 
-const Operations = mongoose.model('Operations', operationSchema);
 
-module.exports = Operations;
+const Operation = mongoose.model('Operations', operationSchema);
+
+module.exports = Operation;

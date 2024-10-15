@@ -1,6 +1,7 @@
 const express = require('express');
-const {connectDb} = require("./db/config.js")
+const {connectDb} = require("./db/database.js")
 const mongoose = require('mongoose')
+const dotenv = require('dotenv').config();
 
 const app = express();
 
@@ -12,7 +13,7 @@ connectDb(); // connect to db
 app.use(express.json());
 
 
-app.use('/api', require('./routes/operations.route.js'))
+app.use('/api/operations', require('./routes/operations.route.js'))
 
 
 app.listen(PORT, () => {

@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../index.js');
 
+const operation = jest.fn();
 
 describe("Test create operations controller", () => {
 
@@ -15,7 +16,7 @@ describe("Test create operations controller", () => {
       	"operator": "*"
       });
 
-    expect(200);
+    expect(201);
     expect(res.body.data).toEqual({result: 20, input1: 4, input2: 5});
   });
 
@@ -110,7 +111,7 @@ describe('Test remove operation controller', () => {
 
 describe('Test remove operations controller', () => {
 
-  test("Delete /api/operations Delete single recent history properly", async () => {
+  test("Delete /api/operations Delete all history properly", async () => {
     const res = await request(app)
       .delete("/api/operations/reset")
       .set("Authorization", `ac@gmail.com`)

@@ -1,10 +1,10 @@
-const {add, subtract, multiply, divide} = require("../common/")
-const Operations = require("../models/operations.model.js")
+const {add, subtract, multiply, divide} = require("../helpers/")
+const Operation = require("../models/operations.model.js")
 
 
 
 // this function will hanlde the calculation based on the operator and call for save to db 
-function handleCalculations(input1, input2, operator, email){
+async function handleCalculations(input1, input2, operator, email){
 
 	let result;
 
@@ -36,49 +36,40 @@ function handleCalculations(input1, input2, operator, email){
 			email
 		}
 
-		const operation = new Operations(data);
-		operation.save();
+		const operation = new Operation(data);
+		await operation.save();
 
 		return result;
 
 	}
 	catch(err){
+		/* istanbul ignore next */
 		console.log(err);
-	}	
+		/* istanbul ignore next */
+		throw new Error(err.message);
+	}
 
 }
 
 
 // get past calculations for a user
 async function getAllPastCalculations(email){
-	try{
-		const operations = await Operations.find({ email }).sort({timestamp: -1});
-		return operations;
-	}
-	catch(err){
-		console.log(err);
-	}
+	return await Operation.find({ email }).sort({timestamp: -1});
 }
 
 
 
 // clear entry from db
 async function removeSingleEntryFromDb(id){
-		await Operations.deleteOne({_id: id});
+	await Operation.deleteOne({_id: id});
 }
 
 
 
 // clear all Operations history for the user
 async function removeAllEntryFromDb(email){
-	await Operations.deleteMany({email});
+	await Operation.deleteMany({email});
 }
-
-
-
-
-
-
 
 
 
