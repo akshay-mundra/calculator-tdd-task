@@ -1,18 +1,17 @@
 const {validateEmail} = require('../validators/');
-const { handleCalculations, getAllPastCalculations, clearLatestEntryFromDb, clearAllEntry } = require('../services/operations.service.js')
+const { handleCalculations, getAllPastCalculations, removeSingleEntryFromDb, removeAllEntryFromDb} = require('../services/operations.service.js')
+const { getEmailFromAuthHeader } = require("../common/")
 
 
-// POST
-// URL - /api/operations
+// perform the operation and save to db
 function calculate(req, res){
 
 	try{
 
-		const {input1, input2, operator} = req.body;
-		const email = req.query.email;
+		const email = getEmailFromAuthHeader(req);
 
-		// validate email and inputs 
-		validateEmail(email);
+		const {input1, input2, operator} = req.body;
+
 
 		if(typeof input1 !== "number" || typeof input2 !== "number"){
 			throw new Error("Input must be number");
@@ -34,15 +33,14 @@ function calculate(req, res){
 }
 
 
-// GET
+// get the list of history
 
 async function showHistory(req, res){
 	try{
-		const email = req.query.email;
-
-		validateEmail(email);
+		const email = getEmailFromAuthHeader(req);
 
 		const pastCalculations = await getAllPastCalculations(email);
+
 		res.status(200).json({"data": pastCalculations})
 	}
 	catch(err){
@@ -53,16 +51,18 @@ async function showHistory(req, res){
 
 
 
-// DELETE
+// delete single entry from history
 async function clearSingleEntry(req, res){
-	const {email, type:clearType } = req.query;
+
+	const id = req.params.id
 
 	try{
 
-		validateEmail(email);
+		const email = getEmailFromAuthHeader(req);
 
+		await removeSingleEntryFromDb(id);
 
-		res.status(200).json({message: `${clearType} cleared`})
+		res.status(200).json({message: `deleted ${id}`})
 
 	}
 	catch(err){
@@ -72,6 +72,29 @@ async function clearSingleEntry(req, res){
 }
 
 
-module.exports = { calculate, showHistory, clearSingleEntry }
+
+
+// delete single entry from history
+async function deleteAllEntry(req, res){
+
+	try{
+		const email = getEmailFromAuthHeader(req);
+
+		await removeAllEntryFromDb(email)
+
+		res.status(200).json({message: `All entries deleted for ${email}`})
+	}
+	catch(err){
+		console.log(err.message);
+		res.status(400).json({message: err.message})
+	}
+}
+
+
+
+
+
+
+module.exports = { calculate, showHistory, clearSingleEntry, deleteAllEntry }
 
 
