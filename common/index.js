@@ -1,5 +1,3 @@
-const {validateEmail} = require("../validators/")
-
 
 // extract email form auth headers and validate it 
 function getEmailFromAuthHeader(req){
@@ -7,10 +5,17 @@ function getEmailFromAuthHeader(req){
 
 	const email = authorization.split(' ')[1];
 	
-	validateEmail(email);
+	if(!email) {
+        throw new Error("Email not defined");
+    }
+
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+        throw new Error("Invalid Email")
+    }
 
 	return email;
-
 }
 
 

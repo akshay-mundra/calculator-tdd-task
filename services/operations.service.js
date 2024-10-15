@@ -28,7 +28,16 @@ function handleCalculations(input1, input2, operator, email){
 				return null;
 		}
 
-		saveCalculationToDb(input1, input2, operator, result, email);
+		const data = {
+			input1,
+			input2,
+			operator,
+			result,
+			email
+		}
+
+		const operation = new Operations(data);
+		operation.save();
 
 		return result;
 
@@ -36,22 +45,6 @@ function handleCalculations(input1, input2, operator, email){
 	catch(err){
 		console.log(err);
 	}	
-
-}
-
-// this funciton will handle the save to db
-function saveCalculationToDb(input1, input2, operator, result, email){
-	
-	const data = {
-		input1,
-		input2,
-		operator,
-		result,
-		email
-	}
-
-	const operation = new Operations(data);
-	operation.save();
 
 }
 
