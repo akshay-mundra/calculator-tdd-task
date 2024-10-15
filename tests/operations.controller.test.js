@@ -2,11 +2,12 @@ const request = require('supertest');
 const app = require('../index.js');
 
 
-describe("Test calculate controller", () => {
+describe("Test create operations controller", () => {
 
   test("POST /api/operations all correct data", async () => {
     const res = await request(app)
-      .post("/api/operations?email=a@gmail.com")
+      .post("/api/operations")
+      .set("Authorization", `ac@gmail.com`)
       .expect("Content-Type", /json/)
       .send({
       	"input1": 4,
@@ -21,7 +22,8 @@ describe("Test calculate controller", () => {
 
   test("POST /api/operations throw error on invalid inputs", async () => {
     const res = await request(app)
-      .post("/api/operations?email=a@gmail.com")
+      .post("/api/operations")
+      .set("Authorization", `ac@gmail.com`)
       .expect("Content-Type", /json/)
       .send({
       	"input1": "4",
@@ -51,7 +53,8 @@ describe("Test calculate controller", () => {
 
   test("POST /api/operations throw error on invalid operator", async () => {
     const res = await request(app)
-      .post("/api/operations?email=a@gmail.com")
+      .post("/api/operations")
+      .set("Authorization", `ac@gmail.com`)
       .expect("Content-Type", /json/)
       .send({
         "input1": 4,
@@ -67,11 +70,12 @@ describe("Test calculate controller", () => {
 
 
 
-describe("Test showHistory controller", () => {	
+describe("Test get operations controller", () => {	
 
   test("GET /api/operations should work properly", async () => {
     const res = await request(app)
-      .get("/api/operations?email=a@gmail.com")
+      .get("/api/operations")
+      .set("Authorization", `ac@gmail.com`)
       .expect("Content-Type", /json/)
     expect(200)
     expect(Array.isArray(res.body.data)).toBe(true);
@@ -80,7 +84,8 @@ describe("Test showHistory controller", () => {
 
   test("GET /api/operations throw error message on invalid email", async () => {
     const res = await request(app)
-      .get("/api/operations?email=agmail.com")
+      .get("/api/operations")
+      .set("Authorization", `Email acgmail.com`)
       .expect("Content-Type", /json/)
     expect(400)
     expect(res.body.message).toEqual("Invalid Email");
@@ -90,35 +95,32 @@ describe("Test showHistory controller", () => {
 
 
 
-describe('Test delete one and all history', () => {
+describe('Test remove operation controller', () => {
 
   test("Delete /api/operations Delete single recent history properly", async () => {
     const res = await request(app)
-      .delete("/api/operations?email=a@gmail.com&type=one")
+      .delete("/api/operations/670e5d1d2f8af583eb2e1bff")
+      .set("Authorization", `ac@gmail.com`)
       .expect("Content-Type", /json/)
     expect(200)
-    expect(res.body.message).toBe("one cleared")
-  });
-
-
-  test("Delete /api/operations Delete single recent history properly", async () => {
-    const res = await request(app)
-      .delete("/api/operations?email=a@gmail.com&type=all")
-      .expect("Content-Type", /json/)
-    expect(200)
-    expect(res.body.message).toBe("all cleared")
-  });
-
-
-  test("Delete /api/operations throw error message on invalid clear type", async () => {
-    const res = await request(app)
-      .delete("/api/operations?email=a@gmail.com&type=two")
-      .expect("Content-Type", /json/)
-    expect(400)  
-    expect(res.body.message).toBe("clear type must be one of one, all")
   });
 
 })
+
+
+describe('Test remove operations controller', () => {
+
+  test("Delete /api/operations Delete single recent history properly", async () => {
+    const res = await request(app)
+      .delete("/api/operations/reset")
+      .set("Authorization", `ac@gmail.com`)
+      .expect("Content-Type", /json/)
+    expect(200)
+  });
+})
+
+
+
 
 
 

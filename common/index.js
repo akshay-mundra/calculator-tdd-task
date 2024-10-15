@@ -3,7 +3,8 @@
 function getEmailFromAuthHeader(req){
 	const authorization = req.headers.authorization;
 
-	const email = authorization.split(' ')[1];
+	const email = authorization;
+	
 	
 	if(!email) {
         throw new Error("Email not defined");

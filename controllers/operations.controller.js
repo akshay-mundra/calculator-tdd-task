@@ -1,4 +1,3 @@
-const {validateEmail} = require('../validators/');
 const { handleCalculations, getAllPastCalculations, removeSingleEntryFromDb, removeAllEntryFromDb} = require('../services/operations.service.js')
 const { getEmailFromAuthHeader } = require("../common/")
 
@@ -35,7 +34,7 @@ function createOperation(req, res){
 
 // get the list of prev operations
 
-async function getoperations(req, res){
+async function getOperations(req, res){
 	try{
 		const email = getEmailFromAuthHeader(req);
 
@@ -52,7 +51,7 @@ async function getoperations(req, res){
 
 
 // delete single entry from history
-async function clearSingleEntry(req, res){
+async function removeOperation(req, res){
 
 	const id = req.params.id
 
@@ -75,7 +74,7 @@ async function clearSingleEntry(req, res){
 
 
 // delete single entry from history
-async function deleteAllEntry(req, res){
+async function removeOperations(req, res){
 
 	try{
 		const email = getEmailFromAuthHeader(req);
@@ -95,6 +94,6 @@ async function deleteAllEntry(req, res){
 
 
 
-module.exports = { calculate, showHistory, clearSingleEntry, deleteAllEntry }
+module.exports = { createOperation, getOperations, removeOperation, removeOperations}
 
 
