@@ -4,7 +4,7 @@ const { getEmailFromAuthHeader } = require("../common/")
 
 
 // perform the operation and save to db
-function calculate(req, res){
+function createOperation(req, res){
 
 	try{
 
@@ -33,9 +33,9 @@ function calculate(req, res){
 }
 
 
-// get the list of history
+// get the list of prev operations
 
-async function showHistory(req, res){
+async function getoperations(req, res){
 	try{
 		const email = getEmailFromAuthHeader(req);
 
