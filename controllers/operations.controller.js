@@ -1,5 +1,5 @@
 const { handleCalculations, getAllPastCalculations, removeSingleEntryFromDb, removeAllEntryFromDb} = require('../services/operations.service.js')
-const { getEmailFromAuthHeader } = require("../helpers/")
+const { getEmailFromAuthHeader, customError } = require("../helpers/")
 
 
 // perform the operation and save to db
@@ -13,13 +13,13 @@ async function createOperation(req, res){
 
 
 		if(typeof input1 !== "number" || typeof input2 !== "number"){
-			throw new Error("Input must be number");
+			customError("Input must be number", 400);
 		}
 		
 		const result = await handleCalculations(input1, input2, operator, email);
 
 		if(result === null){
-			throw new Error("Operator must be one of +, -, * and /")
+			customError("Operator must be one of +, -, * and /", 400);
 		}
 
 		res.status(201).json({ data: { result, input1, input2 } });
@@ -27,7 +27,7 @@ async function createOperation(req, res){
 
 	catch(err){
 		console.log(err.message);
-		res.status(400).json({message: err.message})
+		res.status(err.statusCode).json({message: err.message})
 	}
 }
 

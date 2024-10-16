@@ -1,4 +1,4 @@
-const { add, subtract, multiply, divide } = require("../helpers/")
+const { add, subtract, multiply, divide, customError} = require("../helpers/")
 
 
 test('this adds two numbers', () => {
@@ -21,3 +21,7 @@ test('divides two numbers', () => {
 test('throws error when dividing by zero', () => {
     expect(() => divide(1, 0)).toThrow('Denominator must not be 0');
 });
+
+test('throws custom error with status code', () => {
+    expect(customError("throws custom error", 400)).toThrow("throws custom error");
+})

@@ -46,7 +46,8 @@ async function handleCalculations(input1, input2, operator, email){
 		/* istanbul ignore next */
 		console.log(err);
 		/* istanbul ignore next */
-		throw new Error(err.message);
+		// throw new Error(err.message);
+		customError(err.message, err.statusCode)
 	}
 
 }
