@@ -1,0 +1,130 @@
+openapi: '3.0.0'
+info:
+  title: Operations API
+  description: API for performing and managing calculations
+  version: '1.0.0'
+
+tags:
+  - name: Operations
+    description: Operations related to calculations
+
+paths:
+  /api/operations:
+    post:
+      summary: Perform a calculation operation
+      tags: [Operations]
+      parameters:
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            example: ac@gmail.com
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input1:
+                  type: number
+                  example: 5
+                input2:
+                  type: number
+                  example: 3
+                operator:
+                  type: string
+                  enum: [+, -, *, /]
+                  example: "+"
+      responses:
+        '201':
+          description: Successfully created operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      result:
+                        type: number
+                        example: 8
+                      input1:
+                        type: number
+                        example: 5
+                      input2:
+                        type: number
+                        example: 3
+        '400':
+          description: Bad request, invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Input must be a number"
+
+    get:
+      summary: Retrieve past operations
+      tags: [Operations]
+      responses:
+        '200':
+          description: A list of past operations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "60d21b4667d0d8992e610c85"
+                    input1:
+                      type: number
+                      example: 5
+                    input2:
+                      type: number
+                      example: 3
+                    operator:
+                      type: string
+                      example: "+"
+                    result:
+                      type: number
+                      example: 8
+                    email:
+                      type: string
+                      example: "test@example.com"
+
+  /api/operations/reset:
+    delete:
+      summary: Delete all operations
+      tags: [Operations]
+      responses:
+        '204':
+          description: Successfully deleted all operations
+        '500':
+          description: Internal server error
+
+  /api/operations/{id}:
+    delete:
+      summary: Delete a single operation by ID
+      tags: [Operations]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 'The ID of the operation to delete'
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Successfully deleted the operation
+        '404':
+          description: Operation not found
+        '500':
+          description: Internal server error
+
