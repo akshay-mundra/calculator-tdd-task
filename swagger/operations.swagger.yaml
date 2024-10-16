@@ -14,11 +14,13 @@ paths:
       summary: Perform a calculation operation
       tags: [Operations]
       parameters:
-        - name: authorization
-          in: header
+        - in: header
+          name: email
+          required: true
+          description: 'Users email to fetch the history.'
           schema:
             type: string
-            example: ac@gmail.com
+            format: email
       requestBody:
         required: true
         content:
@@ -70,6 +72,14 @@ paths:
     get:
       summary: Retrieve past operations
       tags: [Operations]
+      parameters:
+        - in: header
+          name: email
+          required: true
+          description: 'Users email to fetch the history.'
+          schema:
+            type: string
+            format: email
       responses:
         '200':
           description: A list of past operations
@@ -103,6 +113,14 @@ paths:
     delete:
       summary: Delete all operations
       tags: [Operations]
+      parameters:
+        - in: header
+          name: email
+          required: true
+          description: 'Users email to fetch the history.'
+          schema:
+            type: string
+            format: email
       responses:
         '204':
           description: Successfully deleted all operations
@@ -113,6 +131,14 @@ paths:
     delete:
       summary: Delete a single operation by ID
       tags: [Operations]
+      parameters:
+        - in: header
+          name: email
+          required: true
+          description: 'Users email to fetch the history.'
+          schema:
+            type: string
+            format: email
       parameters:
         - name: id
           in: path

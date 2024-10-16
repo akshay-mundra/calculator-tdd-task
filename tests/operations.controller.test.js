@@ -8,7 +8,7 @@ describe("Test create operations controller", () => {
   test("POST /api/operations all correct data", async () => {
     const res = await request(app)
       .post("/api/operations")
-      .set("Authorization", `ac@gmail.com`)
+      .set("email", `ac@gmail.com`)
       .expect("Content-Type", /json/)
       .send({
       	"input1": 4,
@@ -24,7 +24,7 @@ describe("Test create operations controller", () => {
   test("POST /api/operations throw error on invalid inputs", async () => {
     const res = await request(app)
       .post("/api/operations")
-      .set("Authorization", `ac@gmail.com`)
+      .set("email", `ac@gmail.com`)
       .expect("Content-Type", /json/)
       .send({
       	"input1": "4",
@@ -55,7 +55,7 @@ describe("Test create operations controller", () => {
   test("POST /api/operations throw error on invalid operator", async () => {
     const res = await request(app)
       .post("/api/operations")
-      .set("Authorization", `ac@gmail.com`)
+      .set("email", `ac@gmail.com`)
       .expect("Content-Type", /json/)
       .send({
         "input1": 4,
@@ -76,7 +76,7 @@ describe("Test get operations controller", () => {
   test("GET /api/operations should work properly", async () => {
     const res = await request(app)
       .get("/api/operations")
-      .set("Authorization", `ac@gmail.com`)
+      .set("email", `ac@gmail.com`)
       .expect("Content-Type", /json/)
     expect(200)
     expect(Array.isArray(res.body.data)).toBe(true);
@@ -86,7 +86,7 @@ describe("Test get operations controller", () => {
   test("GET /api/operations throw error message on invalid email", async () => {
     const res = await request(app)
       .get("/api/operations")
-      .set("Authorization", `Email acgmail.com`)
+      .set("email", `Email acgmail.com`)
       .expect("Content-Type", /json/)
     expect(400)
     expect(res.body.message).toEqual("Invalid Email");
@@ -101,7 +101,7 @@ describe('Test remove operation controller', () => {
   test("Delete /api/operations Delete single recent history properly", async () => {
     const res = await request(app)
       .delete("/api/operations/670e5d1d2f8af583eb2e1bff")
-      .set("Authorization", `ac@gmail.com`)
+      .set("email", `ac@gmail.com`)
       .expect("Content-Type", /json/)
     expect(200)
   });
@@ -114,7 +114,7 @@ describe('Test remove operations controller', () => {
   test("Delete /api/operations Delete all history properly", async () => {
     const res = await request(app)
       .delete("/api/operations/reset")
-      .set("Authorization", `ac@gmail.com`)
+      .set("email", `ac@gmail.com`)
       .expect("Content-Type", /json/)
     expect(200)
   });

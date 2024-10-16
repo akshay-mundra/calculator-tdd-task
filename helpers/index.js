@@ -1,9 +1,7 @@
 
 // extract email form auth headers and validate it 
 function getEmailFromAuthHeader(req){
-	const authorization = req.headers.authorization;
-
-	const email = authorization;
+	const email = req.headers?.email;
 	
 	
 	if(!email) {
